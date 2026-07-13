@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact } from '../data/site.js';
+---
+
+<Base
+  title="Request a Quote — Fanuc Memory &amp; CNC Service | Tulip Electronics"
+  description="Tell us your machine and control — we'll confirm the FANRAM fit and price, usually within one business day. Or call 289-389-6117."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Request a quote', path: '/quote/' }]}
+>
+  <section class="container hero-grid" style="max-width:1000px;padding-top:52px;padding-bottom:64px;display:grid;grid-template-columns:1fr 380px;gap:44px;align-items:start">
+    <div>
+      <p class="eyebrow" style="margin:0 0 14px">REQUEST A QUOTE</p>
+      <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">We'll confirm the fit and price.</h1>
+      <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 26px">Tell us the machine and control. You'll hear back from the person who builds the boards — usually within one business day.</p>
+
+      <!-- TODO:FORM point action at Formspree / Web3Forms / serverless endpoint -->
+      <form id="quote-form" style="display:flex;flex-direction:column;gap:14px">
+        <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <input class="field" name="name" required placeholder="Name" />
+          <input class="field" name="company" placeholder="Company" />
+        </div>
+        <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <input class="field" name="email" type="email" required placeholder="Email" />
+          <input class="field" name="phone" type="tel" placeholder="Phone (optional)" />
+        </div>
+        <input class="field" name="machine" required placeholder="Machine &amp; control (e.g. 1987 Matsuura MC-760V, Fanuc 0-M)" />
+        <textarea class="field" name="message" placeholder="What do you need? Memory size, symptoms, retrofit, service, consultation…" style="min-height:110px;resize:vertical"></textarea>
+        <button class="btn" type="submit" style="align-self:flex-start">Send request</button>
+      </form>
+      <div id="quote-ok" hidden style="padding:30px;border:1.5px solid var(--acc);border-radius:10px;background:var(--accSoft)">
+        <p style="font:700 20px 'Public Sans',sans-serif;margin:0 0 6px">Got it — thanks.</p>
+        <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">Your request is in. If it's urgent, call {contact.phone}.</p>
+      </div>
+    </div>
+
+    <aside class="card" style="padding:24px 26px;display:flex;flex-direction:column;gap:16px">
+      <p style="font:700 15px 'Public Sans',sans-serif;margin:0">Prefer to talk? We like to talk shop.</p>
+      <a class="mono" style="font-size:14px;font-weight:500" href={`tel:${contact.phone}`}>{contact.phone}</a>
+      <a class="mono" style="font-size:14px;font-weight:500" href={`mailto:${contact.email}`}>{contact.email}</a>
+      <p style="border-top:1px solid var(--line);padding-top:14px;font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">Dealer inquiries and new product development requests welcome — we'll work with you to find the best solution.</p>
+      <p class="mono" style="font-size:12px;color:var(--tx3);margin:0">KITCHENER, ONTARIO · MON–FRI 8–5 ET</p>
+    </aside>
+  </section>
+
+  <script is:inline>
+    document.getElementById('quote-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // TODO:FORM submit to real endpoint
+      this.hidden = true;
+      document.getElementById('quote-ok').hidden = false;
+    });
+  </script>
+</Base>

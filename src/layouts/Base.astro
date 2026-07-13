@@ -1,0 +1,156 @@
+---
+// Shared layout: SEO meta, canonical, OG/Twitter, Organization schema,
+// theme (dark default + toggle), header, footer.
+import '../styles/global.css';
+import { contact } from '../data/site.js';
+
+const {
+  title = 'Tulip Electronics — FANRAM CNC Memory Boards Since 1984',
+  description = 'New FANRAM memory boards for legacy Fanuc CNC controls. Designed and built in Canada since 1984. 3-year warranty, support from the engineer who built it.',
+  ogImage = '/assets/board-blue.jpg',
+  breadcrumbs = null // [{ name, path }]
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://tulipmemory.com/#org',
+  name: 'Tulip Electronics Inc.',
+  url: 'https://tulipmemory.com/',
+  logo: 'https://tulipmemory.com/assets/logo.png',
+  foundingDate: '1984',
+  founder: { '@type': 'Person', name: 'Bill Peiman' },
+  email: contact.email,
+  telephone: contact.phone,
+  address: {
+    '@type': 'PostalAddress',
+    // TODO: confirm street address with Bill
+    addressLocality: 'Kitchener',
+    addressRegion: 'ON',
+    addressCountry: 'CA'
+  }
+};
+
+const breadcrumbSchema = breadcrumbs && {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((b, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: b.name,
+    item: new URL(b.path, Astro.site).href
+  }))
+};
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" type="image/png" href="/assets/logo.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Tulip Electronics" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={new URL(ogImage, Astro.site).href} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={new URL(ogImage, Astro.site).href} />
+  <script is:inline>
+    // Runs before paint: restore saved theme (dark is default).
+    try {
+      var t = localStorage.getItem('tulip-theme');
+      if (t) document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  </script>
+  <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+  {breadcrumbSchema && <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />}
+  <slot name="head" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__in">
+      <a href="/" class="brand">
+        <img src="/assets/logo.png" alt="Tulip Electronics logo" width="32" height="32" />
+        <b>TULIP ELECTRONICS</b>
+        <small>CNC MEMORY BOARDS · SINCE 1984</small>
+      </a>
+      <nav class="nav" aria-label="Main">
+        <a href="/fanuc-memory-upgrades/">Memory boards</a>
+        <a href="/services/">Services</a>
+        <a href="/reserve/">In development</a>
+        <a href="/warranty/">Warranty</a>
+        <a href="/about/">About</a>
+        <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark" aria-label="Toggle light/dark theme">
+          <span class="sun">☀</span><span class="moon">☾</span>
+        </button>
+        <a href="/quote/" class="btn btn--sm">Request a quote</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__grid">
+      <div class="site-footer__col" style="gap:10px">
+        <span class="brand" style="gap:9px"><img src="/assets/logo.png" alt="" width="26" height="26" /><b style="font-size:14px">TULIP ELECTRONICS</b></span>
+        <span style="font:400 12.5px/1.6 'Public Sans',sans-serif;color:var(--tx2)">CNC memory boards, designed and built in {contact.city} since {contact.founded}.</span>
+        <span class="mono" style="font-size:12px;color:var(--tx3)">{contact.email} · {contact.phone}</span>
+      </div>
+      <div class="site-footer__col">
+        <span class="microlabel">PRODUCTS</span>
+        <a href="/fanuc-memory-upgrades/">Memory boards</a>
+        <a href="/reserve/">In development</a>
+        <a href="/quote/">Request a quote</a>
+      </div>
+      <div class="site-footer__col">
+        <span class="microlabel">COMPANY</span>
+        <a href="/services/">Services</a>
+        <a href="/warranty/">Warranty &amp; support</a>
+        <a href="/about/">About</a>
+      </div>
+      <div class="site-footer__col" style="gap:10px">
+        <span class="microlabel">SHOP NOTES</span>
+        <span style="font:400 12.5px/1.5 'Public Sans',sans-serif;color:var(--tx2)">Occasional email when a new board ships or an in-development product lands. No fluff.</span>
+        <!-- TODO:FORM point at Formspree / Web3Forms / serverless endpoint -->
+        <form id="newsletter-form" style="display:flex;gap:8px">
+          <input class="field" type="email" required placeholder="you@shop.com" style="flex:1;min-width:0;padding:10px 12px;font-size:13px;background:var(--bg)" />
+          <button class="btn btn--sm" type="submit">Join</button>
+        </form>
+        <span id="newsletter-ok" hidden style="font:600 13px 'Public Sans',sans-serif;color:var(--acc)">You're on the list. ✓</span>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      <div class="container">
+        <span>© {new Date().getFullYear()} Tulip Electronics Inc. · {contact.city} · Since {contact.founded}</span>
+        <span>Fanuc is a trademark of its owner. Tulip is an independent manufacturer.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script is:inline>
+    document.getElementById('theme-toggle').addEventListener('click', function () {
+      var next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('tulip-theme', next); } catch (e) {}
+    });
+    var nf = document.getElementById('newsletter-form');
+    if (nf) nf.addEventListener('submit', function (e) {
+      e.preventDefault(); // TODO:FORM submit to real endpoint
+      nf.hidden = true;
+      document.getElementById('newsletter-ok').hidden = false;
+    });
+  </script>
+</body>
+</html>

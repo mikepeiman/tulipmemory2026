@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import { devProducts, contact } from '../data/site.js';
+---
+
+<Base
+  title="In Development — Fanuc 0 Colour-LCD &amp; USB Input | Tulip Electronics"
+  description="Reserve in-development Tulip products with a refundable deposit: Fanuc 0 colour-LCD conversion and USB program input. Demonstrated at IMTS, built when ready."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'In development', path: '/reserve/' }]}
+>
+  <section class="container" style="max-width:1000px;padding-top:52px;padding-bottom:64px">
+    <p class="eyebrow eyebrow--acc" style="margin:0 0 14px">IN DEVELOPMENT — SPECULATIVE</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">Reserve what's coming next.</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 30px;max-width:64ch">These products have been demonstrated but are still in development. A fully-refundable deposit funds the build and holds your place in line — you'll be first to know, and first served.</p>
+
+    <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px">
+      {devProducts.map((d, i) => (
+        <label class="card dev-pick" style="padding:24px;border-radius:10px;cursor:pointer;display:block">
+          <input type="radio" name="dev" value={d.id} checked={i === 0} style="position:absolute;opacity:0" />
+          <span style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+            <span class="microlabel" style="color:var(--acc)">{d.tag}</span>
+            <span class="dot" style="width:18px;height:18px;border-radius:99px;border:1.5px solid var(--acc);display:inline-block"></span>
+          </span>
+          <span style="display:block;font:700 17px 'Public Sans',sans-serif;margin-bottom:6px">{d.name}</span>
+          <span style="display:block;font:400 13px/1.55 'Public Sans',sans-serif;color:var(--tx2)">{d.desc}</span>
+          <span class="mono" style="display:block;font-size:12px;font-weight:600;color:var(--tx3);margin-top:12px">DEPOSIT {d.deposit} · REFUNDABLE</span>
+          <!-- TODO: confirm deposit amounts with Bill -->
+        </label>
+      ))}
+    </div>
+
+    <!-- TODO:FORM point at real endpoint; TODO:STRIPE optionally take the deposit via Stripe Payment Link -->
+    <form id="reserve-form" class="card" style="padding:26px 30px;display:flex;flex-direction:column;gap:14px;max-width:560px">
+      <p style="font:700 16px 'Public Sans',sans-serif;margin:0">Your details</p>
+      <input class="field" name="name" required placeholder="Name" style="background:var(--bg)" />
+      <input class="field" name="company" placeholder="Company" style="background:var(--bg)" />
+      <input class="field" name="email" type="email" required placeholder="Email" style="background:var(--bg)" />
+      <input class="field" name="machine" placeholder="Machine &amp; control (e.g. 1987 Matsuura, Fanuc 0-M)" style="background:var(--bg)" />
+      <button class="btn" type="submit" style="text-align:center">Reserve my place</button>
+      <p style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3);margin:0">No charge today — we'll follow up to arrange the deposit. Or just register interest by emailing {contact.email}.</p>
+    </form>
+    <div id="reserve-ok" hidden style="padding:30px;border:1.5px solid var(--acc);border-radius:10px;background:var(--accSoft);max-width:560px">
+      <p style="font:700 20px 'Public Sans',sans-serif;margin:0 0 6px">Reservation received.</p>
+      <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">We'll contact you at the email you provided to arrange the deposit and confirm your place in line. Questions? {contact.phone} or {contact.email}.</p>
+    </div>
+  </section>
+
+  <style>
+    .dev-pick { position: relative; border: 1.5px solid var(--line); }
+    .dev-pick:has(input:checked) { border-color: var(--acc); background: var(--accSoft); }
+    .dev-pick:has(input:checked) .dot { background: var(--acc); }
+  </style>
+  <script is:inline>
+    document.getElementById('reserve-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // TODO:FORM submit to real endpoint
+      this.hidden = true;
+      document.getElementById('reserve-ok').hidden = false;
+    });
+  </script>
+</Base>

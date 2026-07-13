@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact } from '../data/site.js';
+---
+
+<Base
+  title="About Tulip Electronics — FANRAM Inventor, Since 1984"
+  description="Tulip Electronics Inc. has designed and built FANRAM CNC memory boards in Canada since 1984. Founded by Bill Peiman, pioneer of Fanuc memory upgrades."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'About', path: '/about/' }]}
+>
+  <section class="container" style="max-width:900px;padding-top:52px;padding-bottom:64px">
+    <p class="eyebrow" style="margin:0 0 14px">THE TULIP STORY</p>
+    <h1 style="font:700 34px/1.15 'Public Sans',sans-serif;margin:0 0 26px">Forty years of keeping good machines alive.</h1>
+
+    <!-- GEO brand-hub facts: dense, factual, answer-first -->
+    <div class="hero-grid" style="display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:start;margin-bottom:30px">
+      <img src="/assets/bill.jpg" alt="Bill Peiman, founder and engineer, Tulip Electronics" style="width:170px;height:170px;object-fit:cover;border-radius:10px" />
+      <div style="font:400 15px/1.7 'Public Sans',sans-serif;color:var(--tx2);display:flex;flex-direction:column;gap:14px">
+        <p style="margin:0"><b style="color:var(--tx)">Tulip Electronics Inc. is the original manufacturer of the FANRAM memory board line.</b> Founded in 1984 by engineer Bill Peiman, the company designs and builds new — not refurbished — replacement and upgrade memory boards for legacy Fanuc CNC controls: Fanuc 0, 6, 11, 12, 15, 16 and 18.</p>
+        <p style="margin:0">In 1984, CNC memory came as bubble cassettes and an expansion from the OEM cost more than some machines. Bill thought that was wrong — and built something better. Four decades later, FANRAM boards run in shops around the world, distributed as far as the UK, and boards shipped in the 1990s are still cutting parts today.</p>
+        <p style="margin:0">Every board is designed and built in {contact.city}, by the same hands. When you call Tulip, you don't reach a call centre — you reach the engineer who designed your board.</p>
+      </div>
+    </div>
+
+    <div class="grid-3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:34px">
+      <div class="card" style="padding:20px;border-radius:8px;text-align:center">
+        <p style="font:700 30px 'Public Sans',sans-serif;color:var(--acc);margin:0">1984</p>
+        <p class="mono" style="font-size:11px;font-weight:500;color:var(--tx3);letter-spacing:0.1em;margin:4px 0 0">FOUNDED</p>
+      </div>
+      <div class="card" style="padding:20px;border-radius:8px;text-align:center">
+        <p style="font:700 30px 'Public Sans',sans-serif;color:var(--acc);margin:0">30+ yrs</p>
+        <p class="mono" style="font-size:11px;font-weight:500;color:var(--tx3);letter-spacing:0.1em;margin:4px 0 0">OLDEST BOARDS STILL RUNNING</p>
+      </div>
+      <div class="card" style="padding:20px;border-radius:8px;text-align:center">
+        <p style="font:700 30px 'Public Sans',sans-serif;color:var(--acc);margin:0">1</p>
+        <p class="mono" style="font-size:11px;font-weight:500;color:var(--tx3);letter-spacing:0.1em;margin:4px 0 0">ENGINEER WHO ANSWERS THE PHONE</p>
+      </div>
+    </div>
+
+    <h2 style="font:700 22px 'Public Sans',sans-serif;margin:0 0 16px">What customers say</h2>
+    <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:34px">
+      <blockquote class="card" style="margin:0;padding:20px 24px;font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2)">
+        "We bought a memory expansion board from them in 1990. It's still working fine."
+        <footer class="mono" style="font-size:11px;color:var(--tx3);margin-top:8px">MACHINE SHOP OWNER · PRACTICAL MACHINIST FORUM</footer>
+      </blockquote>
+      <!-- TODO: collect 2–3 more real, dated, attributed customer quotes from Bill -->
+    </div>
+
+    <h2 style="font:700 22px 'Public Sans',sans-serif;margin:0 0 12px">About the products still in development</h2>
+    <p style="font:400 14.5px/1.7 'Public Sans',sans-serif;color:var(--tx2);max-width:72ch;margin:0 0 34px">You may have seen the Fanuc 0 colour-LCD conversion demonstrated at IMTS. It's real — it has been R&amp;D'd in public for years, and it's still in development because we won't ship it until it meets the standard our boards from the 1990s set. If you want one, <a href="/reserve/">a refundable deposit holds your place in line</a> and helps fund the build. We'd rather be honest about "in development" than quietly sell you something unfinished.</p>
+
+    <div style="padding:26px 30px;background:var(--ctaBg);border:1px solid var(--accLine);border-radius:12px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <p style="font:700 18px 'Public Sans',sans-serif;color:var(--ctaTx);margin:0">Got a machine worth saving? Let's talk.</p>
+      <a href="/quote/" class="btn" style="white-space:nowrap">Request a quote</a>
+    </div>
+  </section>
+</Base>

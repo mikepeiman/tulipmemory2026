@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { contact } from '../data/site.js';
+
+const rows = [
+  ['COVERAGE', '3 years on every memory board, parts and workmanship, from date of shipment.'],
+  ['TECHNICAL SUPPORT', 'Free by phone and email for the life of the product — install help, parameter recovery, diagnosis. You talk to the engineer, not a call centre.'],
+  ['OUT OF WARRANTY', 'We repair or replace older Tulip boards at fair cost — including boards from the 1990s. Call before you scrap anything.'],
+  ['HOW TO CLAIM', `Call ${contact.phone} or email ${contact.email} with the board's serial number. We'll sort it out from there.`]
+];
+---
+
+<Base
+  title="Warranty &amp; Support — 3 Years on Every Board | Tulip Electronics"
+  description="Every FANRAM memory board carries a 3-year warranty plus free lifetime technical support from the engineer who built it. Boards from the 1990s still supported."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Warranty & support', path: '/warranty/' }]}
+>
+  <section class="container" style="max-width:900px;padding-top:52px;padding-bottom:64px">
+    <p class="eyebrow" style="margin:0 0 14px">WARRANTY &amp; SUPPORT</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">3 years. Backed by the builder.</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 30px;max-width:64ch">Every Tulip board ships with a 3-year warranty. That's not a marketing number — customers still run boards we shipped in the 1990s, and the same engineer who built yours picks up the phone.</p>
+    <div class="card" style="overflow:hidden">
+      {rows.map(([label, text], i) => (
+        <div style={`display:grid;grid-template-columns:220px 1fr;padding:18px 24px;${i < rows.length - 1 ? 'border-bottom:1px solid var(--line)' : ''}`}>
+          <span class="mono" style="font-size:11px;font-weight:600;letter-spacing:0.1em;color:var(--tx3);padding-top:2px">{label}</span>
+          <span style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2)">{text}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>

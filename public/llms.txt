@@ -1,0 +1,28 @@
+# Tulip Electronics Inc.
+
+> Canadian manufacturer of FANRAM memory boards for legacy Fanuc CNC controls since 1984.
+> Kitchener, Ontario, Canada · cnc@tulipmemory.com · 289-389-6117
+
+Tulip Electronics designs and manufactures new (not refurbished) replacement and upgrade
+memory boards for legacy Fanuc CNC controls: Fanuc 0 (0A/0B/0C), Fanuc 6, Fanuc 11/12,
+Fanuc 15, and Fanuc 16/18. The FANRAM product line was invented by founder Bill Peiman.
+Every board carries a 3-year warranty with free lifetime technical support from the
+original engineer. Customers still run FANRAM boards shipped in the 1990s.
+
+## Products
+- [FANRAM memory boards overview](https://tulipmemory.com/fanuc-memory-upgrades/): all control families, capacities, and OEM cross-references
+- [Fanuc 0 memory expansion](https://tulipmemory.com/fanuc-memory-upgrades/fanuc-0/)
+- [Fanuc 6 bubble memory replacement](https://tulipmemory.com/fanuc-memory-upgrades/fanuc-6/): 32K, 128K, 512K
+- [Fanuc 11 / 12 BMU replacement](https://tulipmemory.com/fanuc-memory-upgrades/fanuc-11-12/): replaces A87L-0001-0084 and A87L-0001-0018; 32K to 2M
+- [Fanuc 15 memory upgrade](https://tulipmemory.com/fanuc-memory-upgrades/fanuc-15/): 128K to 2M
+- [Fanuc 16 / 18 memory upgrade](https://tulipmemory.com/fanuc-memory-upgrades/fanuc-16-18/): 256K to 2M
+- Also: FanFile and FanKit memory solutions; Fanuc 9, 10, 21i-A on request
+
+## Services
+- [Services](https://tulipmemory.com/services/): control retrofits, in-person and remote service, technical support, consultation
+
+## Company
+- [About Tulip Electronics](https://tulipmemory.com/about/): founded 1984 by Bill Peiman; company history, facts, and testimonials
+- [Warranty & support](https://tulipmemory.com/warranty/): 3-year warranty terms
+- [Request a quote](https://tulipmemory.com/quote/)
+- [In development](https://tulipmemory.com/reserve/): Fanuc 0 colour-LCD conversion and USB program input (reserve with deposit)

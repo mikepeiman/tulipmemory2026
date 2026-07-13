@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Hand-written static sitemap. Add a <url> block when you add a page. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://tulipmemory.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/</loc><priority>0.9</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-0/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-6/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-11-12/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-15/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-16-18/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/services/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/warranty/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/about/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/reserve/</loc><priority>0.6</priority></url>
+  <url><loc>https://tulipmemory.com/quote/</loc><priority>0.6</priority></url>
+</urlset>

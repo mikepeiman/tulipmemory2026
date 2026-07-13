@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import { families } from '../../data/site.js';
+---
+
+<Base
+  title="Fanuc Memory Upgrades — FANRAM Boards | Tulip Electronics"
+  description="FANRAM memory upgrade and replacement boards for Fanuc 0, 6, 11, 12, 15, 16 and 18 controls. New manufacture, 3-year warranty, made in Canada since 1984."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Fanuc memory upgrades', path: '/fanuc-memory-upgrades/' }]}
+>
+  <section class="container" style="max-width:1000px;padding-top:52px;padding-bottom:64px">
+    <p class="eyebrow" style="margin:0 0 14px">FIND YOUR BOARD</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">Fanuc memory upgrades, by control family.</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 28px;max-width:60ch">Every FANRAM board is new manufacture — not refurbished — designed and built in Canada since 1984. Pick your control family; if it isn't listed, send it anyway. After 40 years, there isn't much we haven't seen.</p>
+
+    <div style="display:flex;flex-direction:column;gap:14px">
+      {families.map((f) => (
+        <a href={`/fanuc-memory-upgrades/${f.slug}/`} class="card" style="display:grid;grid-template-columns:200px 1fr auto;gap:26px;align-items:center;padding:22px 26px;color:var(--tx)">
+          <img src={f.img} alt={`FANRAM memory board for ${f.name} CNC controls`} style="width:200px;height:120px;object-fit:cover;border-radius:6px" loading="lazy" />
+          <span style="display:flex;flex-direction:column;gap:6px">
+            <span style="font:700 18px 'Public Sans',sans-serif">FANRAM for {f.name} <span style="font:400 14px;color:var(--tx3)">{f.sub}</span></span>
+            <span class="mono" style="font-size:13px;font-weight:500;color:var(--tx2)">{f.caps}</span>
+            <span style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">{f.desc}</span>
+          </span>
+          <span class="btn btn--sm" style="white-space:nowrap">View board →</span>
+        </a>
+      ))}
+    </div>
+
+    <div style="margin-top:26px;padding:22px 26px;border:1.5px dashed var(--btn2line);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <div>
+        <h2 style="font:700 15px 'Public Sans',sans-serif;margin:0 0 4px">Not listed, or not sure?</h2>
+        <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx2);margin:0">Fanuc 9, 10, 21i-A, FanFile, FanKit and more. Send us the control and machine — we'll confirm the fit.</p>
+      </div>
+      <a href="/quote/" class="btn btn--acc-outline" style="white-space:nowrap;padding:11px 20px;font-size:13px">Send your control</a>
+    </div>
+  </section>
+</Base>

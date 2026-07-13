@@ -1,0 +1,26 @@
+---
+import Base from '../layouts/Base.astro';
+import { services } from '../data/site.js';
+---
+
+<Base
+  title="CNC Control Retrofits, Service &amp; Support | Tulip Electronics"
+  description="Control retrofits, in-person and remote CNC service, technical support and consultation for legacy Fanuc controls — from the engineer who builds FANRAM boards."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Services', path: '/services/' }]}
+>
+  <section class="container" style="max-width:1100px;padding-top:52px;padding-bottom:64px">
+    <p class="eyebrow" style="margin:0 0 14px">SERVICES</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">Beyond the board.</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 30px;max-width:64ch">Memory boards are the product — these are the other ways we keep good machines earning.</p>
+    <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      {services.map((s) => (
+        <div class="card" style="padding:26px 28px">
+          <p class="microlabel" style="color:var(--red);margin:0 0 10px">{s.tag}</p>
+          <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 8px">{s.name}</h2>
+          <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">{s.long}</p>
+          <a href="/quote/" style="display:inline-block;font:700 13px 'Public Sans',sans-serif;margin-top:14px">Start a conversation →</a>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
