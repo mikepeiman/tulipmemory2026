@@ -303,7 +303,7 @@ export const platforms: ControlPlatform[] = [
       { partNumber: 'A20B-3900-0060', size: '2M', usable: '1M' },
       { partNumber: 'A20B-3900-0020', size: '3M', usable: '2M' },
     ],
-    notes: ['iA series only. The iB series and later are not served — see unsupportedControls.'],
+    notes: ['iA series only. Memory for the iB series and later isn\'t offered yet — vote for it on our product development page.'],
     needsBill: [],
   },
   {
@@ -690,23 +690,9 @@ export const products: Product[] = [
  * provide memory for; the 0i series, the 'Mate' series, all controls made
  * after 2007. starting with the iB series."
  *
- * Publish this. It stops wasted quotes, it is honest, and it ranks for the
- * "does Tulip support X" searches we currently lose.
+ * No longer published as a flat rejection — see `requestedProducts` below,
+ * which turns the same three items into a public upvote list instead.
  * ------------------------------------------------------------------ */
-
-export const unsupportedControls = {
-  intro:
-    'We do not make memory for every Fanuc control. If your control is on this list, we cannot help — and we would rather tell you now than take your enquiry.',
-  items: [
-    { label: 'Fanuc 0i series', detail: 'All 0i variants.' },
-    { label: 'Fanuc "Mate" series', detail: 'All Mate variants.' },
-    {
-      label: 'Fanuc iB series and later',
-      detail: 'Anything from the iB series onward, and generally any control built after 2007.',
-    },
-  ],
-  copyStatus: 'draft' as const,
-};
 
 /* ------------------------------------------------------------------ *
  * Requested products — the public "what should we build next" list

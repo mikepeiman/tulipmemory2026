@@ -2,12 +2,27 @@
 <!-- Hand-written static sitemap. Add a <url> block when you add a page. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://tulipmemory.com/</loc><priority>1.0</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/</loc><priority>0.9</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-0/</loc><priority>0.8</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-6/</loc><priority>0.8</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-11-12/</loc><priority>0.8</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-15/</loc><priority>0.8</priority></url>
-  <url><loc>https://tulipmemory.com/fanuc-memory-upgrades/fanuc-16-18/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/products/</loc><priority>0.9</priority></url>
+  <url><loc>https://tulipmemory.com/controls/fanuc/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/controls/yasnac/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/controls/mitsubishi/</loc><priority>0.8</priority></url>
+  <url><loc>https://tulipmemory.com/products/fanram-32k/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fanram-128k/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fanram-512k/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fanram-2m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fanram-1-5m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fan16a-512k/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fan16bc-2m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/f16b-from/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/f15a-2m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/f15b-2m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fan-i-512k/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fan-i-1m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/fan-i-2m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/mitram500/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/yasram-mx2-lx2-128/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/yasram-mx3-lx3-1m/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/products/yasram-i80-512/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/services/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/warranty/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/about/</loc><priority>0.7</priority></url>

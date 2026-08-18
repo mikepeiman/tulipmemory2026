@@ -32,9 +32,10 @@ Or with the CLI: `npx vercel` from this folder.
 - **Hours** in the quote sidebar (Mon–Fri 8–5 ET) are placeholders.
 
 ## Structure
-- `src/data/site.js` — all product/service/contact data in one place
+- `src/data/products.ts` — the catalogue: families, control platforms, SKUs, pricing, OEM cross-references
+- `src/data/site.js` — contact info, services list, in-development products
 - `src/layouts/Base.astro` — header, footer, theme toggle, SEO tags, JSON-LD
-- `src/pages/` — index, fanuc-memory-upgrades/ (hub + per-family pages), services, warranty, about, quote, reserve
+- `src/pages/` — index, products/ (full catalogue + per-SKU pages), controls/ (per-family finders), product-development/, services, warranty, about, quote, reserve
 - `public/` — assets, `robots.txt` (AI crawlers allowed), `llms.txt`, `sitemap.xml`
 
 ## SEO / sitemap
