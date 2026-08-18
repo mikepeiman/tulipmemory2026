@@ -136,6 +136,18 @@ button {
   background: var(--bg2);
 }
 
+/* Whole-card links: the card itself is the click target. Highlight the
+   border on hover instead of the global a:hover opacity fade, which reads
+   as "disabled" on a large surface. */
+a.card {
+  transition: border-color 0.15s ease;
+}
+
+a.card:hover {
+  border-color: var(--acc);
+  opacity: 1;
+}
+
 .field {
   width: 100%;
   padding: 12px 14px;
