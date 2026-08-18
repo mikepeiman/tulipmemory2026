@@ -1,11 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
-import { contact } from '../data/site.js';
+import { contact, services } from '../data/site.js';
 import { products } from '../data/products';
 
-// Static site — the ?part= query string isn't known at build time, so the
-// slug -> part name lookup runs client-side against this small embedded map.
+// Static site — the ?part= / ?service= query strings aren't known at build
+// time, so the slug -> name lookups run client-side against these small
+// embedded maps.
 const partNames = Object.fromEntries(products.map((p) => [p.slug, p.partName]));
+const serviceNames = Object.fromEntries(services.map((s) => [s.slug, s.name]));
 ---
 
 <Base
@@ -20,12 +22,13 @@ const partNames = Object.fromEntries(products.map((p) => [p.slug, p.partName]));
       <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 26px">Tell us the machine and control. You'll hear back from the person who builds the boards — usually within one business day.</p>
 
       <div id="quote-part-banner" hidden class="mono" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--acc);border-radius:6px;background:var(--accSoft);color:var(--acc);font-size:13px;font-weight:600;margin-bottom:16px">
-        Quoting: <span id="quote-part-name"></span>
+        <span id="quote-banner-label">Quoting:</span> <span id="quote-part-name"></span>
       </div>
 
       <!-- TODO:FORM point action at Formspree / Web3Forms / serverless endpoint -->
       <form id="quote-form" style="display:flex;flex-direction:column;gap:14px">
         <input type="hidden" name="part" id="quote-part-field" />
+        <input type="hidden" name="service" id="quote-service-field" />
         <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <input class="field" name="name" required placeholder="Name" />
           <input class="field" name="company" placeholder="Company" />
@@ -53,14 +56,23 @@ const partNames = Object.fromEntries(products.map((p) => [p.slug, p.partName]));
     </aside>
   </section>
 
-  <script is:inline define:vars={{ partNames }}>
-    var part = new URLSearchParams(location.search).get('part');
-    if (part) {
+  <script is:inline define:vars={{ partNames, serviceNames }}>
+    var params = new URLSearchParams(location.search);
+    var part = params.get('part');
+    var service = params.get('service');
+    var msg = document.getElementById('quote-message');
+
+    if (service && serviceNames[service]) {
+      document.getElementById('quote-service-field').value = service;
+      document.getElementById('quote-banner-label').textContent = 'Service:';
+      document.getElementById('quote-part-name').textContent = serviceNames[service];
+      document.getElementById('quote-part-banner').hidden = false;
+      msg.placeholder = 'Asking about ' + serviceNames[service] + '. Tell us the machine and what\u2019s going on \u2014 symptoms, history, timeline?';
+    } else if (part) {
       var name = partNames[part] || part;
       document.getElementById('quote-part-field').value = part;
       document.getElementById('quote-part-name').textContent = name;
       document.getElementById('quote-part-banner').hidden = false;
-      var msg = document.getElementById('quote-message');
       msg.placeholder = 'Asking about ' + name + '. Anything else we should know — machine, symptoms, quantity?';
     }
 

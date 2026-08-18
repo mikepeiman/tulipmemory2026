@@ -35,7 +35,7 @@ Or with the CLI: `npx vercel` from this folder.
 - `src/data/products.ts` — the catalogue: families, control platforms, SKUs, pricing, OEM cross-references
 - `src/data/site.js` — contact info, services list, in-development products
 - `src/layouts/Base.astro` — header, footer, theme toggle, SEO tags, JSON-LD
-- `src/pages/` — index, products/ (full catalogue + per-SKU pages), controls/ (per-family finders), product-development/, services, warranty, about, quote, reserve
+- `src/pages/` — index, products/ (full catalogue + per-SKU pages), controls/ (per-family finders), services/ (hub + per-service pages), product-development/, warranty, about, quote, reserve
 - `public/` — assets, `robots.txt` (AI crawlers allowed), `llms.txt`, `sitemap.xml`
 
 ## SEO / sitemap

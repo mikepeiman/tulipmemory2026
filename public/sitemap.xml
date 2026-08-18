@@ -24,6 +24,10 @@
   <url><loc>https://tulipmemory.com/products/yasram-mx3-lx3-1m/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/products/yasram-i80-512/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/services/</loc><priority>0.7</priority></url>
+  <url><loc>https://tulipmemory.com/services/retrofit/</loc><priority>0.6</priority></url>
+  <url><loc>https://tulipmemory.com/services/service/</loc><priority>0.6</priority></url>
+  <url><loc>https://tulipmemory.com/services/support/</loc><priority>0.6</priority></url>
+  <url><loc>https://tulipmemory.com/services/consultation/</loc><priority>0.6</priority></url>
   <url><loc>https://tulipmemory.com/warranty/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/about/</loc><priority>0.7</priority></url>
   <url><loc>https://tulipmemory.com/reserve/</loc><priority>0.6</priority></url>

@@ -19,7 +19,11 @@ shipped in the 1990s. Fanuc 0i, "Mate" and iB-series (post-2007) controls are no
 - [Mitsubishi control finder](https://tulipmemory.com/controls/mitsubishi/): MITRAM500 for the 500 series (Mazak PLUS)
 
 ## Services
-- [Services](https://tulipmemory.com/services/): control retrofits, in-person and remote service, technical support, consultation
+- [Services overview](https://tulipmemory.com/services/)
+- [Control retrofits](https://tulipmemory.com/services/retrofit/): modernize a legacy control while keeping the machine
+- [In-person & remote service](https://tulipmemory.com/services/service/): diagnosis, repair, parameter recovery, board-level repair
+- [Technical support](https://tulipmemory.com/services/support/): free phone/email support for the life of every Tulip product
+- [Consultation](https://tulipmemory.com/services/consultation/): upgrade, retrofit, or replace — a straight answer
 
 ## Company
 - [About Tulip Electronics](https://tulipmemory.com/about/): founded 1984 by Bill Peiman; company history, facts, and testimonials

@@ -64,7 +64,7 @@ import { families, platformsByFamily, productsByFamily, formatPrice } from '../d
     <p style="font:400 14px 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 18px">Boards are the product. These are the ways we keep your machine running.</p>
     <div class="grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
       {services.map((s) => (
-        <a href="/services/" class="card" style="padding:20px;border-radius:8px;display:block;color:var(--tx)">
+        <a href={`/services/${s.slug}/`} class="card" style="padding:20px;border-radius:8px;display:block;color:var(--tx)">
           <p class="microlabel" style="color:var(--red);margin:0 0 8px">{s.tag}</p>
           <h3 style="font:700 14px 'Public Sans',sans-serif;margin:0 0 6px">{s.name}</h3>
           <p style="font:400 12.5px/1.5 'Public Sans',sans-serif;color:var(--tx2);margin:0">{s.desc}</p>

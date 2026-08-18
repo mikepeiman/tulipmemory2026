@@ -1,6 +1,6 @@
 ---
-import Base from '../layouts/Base.astro';
-import { services } from '../data/site.js';
+import Base from '../../layouts/Base.astro';
+import { services } from '../../data/site.js';
 ---
 
 <Base
@@ -14,11 +14,11 @@ import { services } from '../data/site.js';
     <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 30px;max-width:64ch">Memory boards are the product — these are the other ways we keep good machines earning.</p>
     <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
       {services.map((s) => (
-        <a href="/quote/" class="card" style="padding:26px 28px;display:block;color:var(--tx)">
+        <a href={`/services/${s.slug}/`} class="card" style="padding:26px 28px;display:block;color:var(--tx)">
           <p class="microlabel" style="color:var(--red);margin:0 0 10px">{s.tag}</p>
           <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 8px">{s.name}</h2>
           <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">{s.long}</p>
-          <span style="display:inline-block;font:700 13px 'Public Sans',sans-serif;margin-top:14px;color:var(--acc)">Start a conversation →</span>
+          <span style="display:inline-block;font:700 13px 'Public Sans',sans-serif;margin-top:14px;color:var(--acc)">Learn more →</span>
         </a>
       ))}
     </div>
