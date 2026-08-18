@@ -1,0 +1,83 @@
+---
+// Express interest / product development: vote on requested products, then
+// suggest your own — including, optionally, an amount you'd consider investing
+// in its development under flexible TBD terms.
+import Base from '../layouts/Base.astro';
+import ProductInterest from '../components/ProductInterest.astro';
+import { contact } from '../data/site.js';
+---
+
+<Base
+  title="Suggest a Product — CNC Product Development | Tulip Electronics"
+  description="Help decide what Tulip Electronics builds next. Vote on requested CNC memory products, suggest your own, and optionally propose backing a product's development — terms flexible, worked out together."
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Product development', path: '/product-development/' }]}
+>
+  <section class="container" style="max-width:1000px;padding-top:52px;padding-bottom:28px">
+    <p class="eyebrow eyebrow--acc" style="margin:0 0 14px">PRODUCT DEVELOPMENT</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">Tell us what to build next.</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0;max-width:64ch">The next Tulip product could start with your machine. Vote for the candidates below, or suggest something we haven't thought of — if enough shops want it, or a few want it badly enough to help fund the build, it gets made.</p>
+  </section>
+
+  <section class="container" style="max-width:1000px;padding-bottom:44px">
+    <ProductInterest showCta={false} />
+  </section>
+
+  <section class="container hero-grid" id="suggest" style="max-width:1000px;padding-bottom:64px;display:grid;grid-template-columns:1fr 380px;gap:44px;align-items:start;scroll-margin-top:90px">
+    <div>
+      <h2 style="font:700 22px 'Public Sans',sans-serif;margin:0 0 6px">Suggest a product</h2>
+      <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 22px">Every suggestion is read by the engineer who would build it. The more specific you are about the machine and the job, the faster we can tell you whether it's feasible.</p>
+
+      <!-- TODO:FORM point action at Formspree / Web3Forms / serverless endpoint -->
+      <form id="interest-form" style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" name="votes" id="interest-votes-field" />
+        <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <input class="field" name="name" placeholder="Name (optional)" />
+          <input class="field" name="email" type="email" required placeholder="Email" />
+        </div>
+        <input class="field" name="product" required placeholder="Product name or type (e.g. memory board for Fanuc 0i, USB program input)" />
+        <input class="field" name="machine" required placeholder="Machine, control &amp; use (e.g. 2004 Kitamura Mycenter, Fanuc 18i-MB, mold work)" />
+        <textarea class="field" name="details" placeholder="Anything else that would help — quantities, deadline, the OEM part number, what prompted this… (optional)" style="min-height:110px;resize:vertical"></textarea>
+
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:stretch;gap:8px">
+            <span class="mono" style="display:flex;align-items:center;padding:0 14px;border:1px solid var(--btn2line);border-radius:6px;background:var(--bg3);color:var(--tx3);font-size:13px;font-weight:600">US$</span>
+            <input class="field" name="investment" type="number" min="0" step="any" placeholder="Amount you'd consider investing (optional)" />
+          </div>
+          <p style="font:400 12px/1.5 'Public Sans',sans-serif;color:var(--tx3);margin:0">If you'd consider helping fund this product's development, name a figure. It is not a commitment or an offer — terms are flexible and to be determined, and nothing is agreed until we've talked it through together.</p>
+        </div>
+
+        <button class="btn" type="submit" style="align-self:flex-start">Express interest</button>
+        <p style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3);margin:0">We'll only use your email to reply about this suggestion. No lists, no newsletters unless you ask.</p>
+      </form>
+      <div id="interest-ok" hidden style="padding:30px;border:1.5px solid var(--acc);border-radius:10px;background:var(--accSoft)">
+        <p style="font:700 20px 'Public Sans',sans-serif;margin:0 0 6px">Thank you — it's on the bench list.</p>
+        <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">Your suggestion is in, along with any votes you placed. If you'd like to talk it through sooner, call {contact.phone}.</p>
+      </div>
+    </div>
+
+    <aside class="card" style="padding:24px 26px;display:flex;flex-direction:column;gap:16px">
+      <p style="font:700 15px 'Public Sans',sans-serif;margin:0">How a suggestion becomes a product</p>
+      <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px">
+        <li style="font:400 13px/1.55 'Public Sans',sans-serif;color:var(--tx2)">You tell us the product and the machine or control it serves.</li>
+        <li style="font:400 13px/1.55 'Public Sans',sans-serif;color:var(--tx2)">Votes and suggestions accumulate — we review them when planning bench time.</li>
+        <li style="font:400 13px/1.55 'Public Sans',sans-serif;color:var(--tx2)">When the demand makes sense, we scope the build. If you proposed an amount, we work out terms together first.</li>
+      </ol>
+      <p style="border-top:1px solid var(--line);padding-top:14px;font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">Rather back something already announced? The Fanuc 0 colour-LCD conversion and USB program input are in development now — <a href="/reserve/">reserve with a refundable deposit</a>.</p>
+      <p class="mono" style="font-size:12px;color:var(--tx3);margin:0">{contact.email} · {contact.phone}</p>
+    </aside>
+  </section>
+
+  <script is:inline>
+    document.getElementById('interest-form').addEventListener('submit', function (e) {
+      e.preventDefault(); // TODO:FORM submit to real endpoint
+      // Attach the visitor's current votes so the suggestion and the demand
+      // signal arrive together. Re-reads the same store ProductInterest uses.
+      try {
+        var votes = JSON.parse(localStorage.getItem('tulip-product-votes')) || {};
+        document.getElementById('interest-votes-field').value = Object.keys(votes).join(', ');
+      } catch (err) {}
+      this.hidden = true;
+      document.getElementById('interest-ok').hidden = false;
+    });
+  </script>
+</Base>

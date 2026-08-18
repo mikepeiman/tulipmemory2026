@@ -1,6 +1,11 @@
 ---
 import Base from '../layouts/Base.astro';
 import { contact } from '../data/site.js';
+import { products } from '../data/products';
+
+// Static site — the ?part= query string isn't known at build time, so the
+// slug -> part name lookup runs client-side against this small embedded map.
+const partNames = Object.fromEntries(products.map((p) => [p.slug, p.partName]));
 ---
 
 <Base
@@ -14,8 +19,13 @@ import { contact } from '../data/site.js';
       <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">We'll confirm the fit and price.</h1>
       <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 26px">Tell us the machine and control. You'll hear back from the person who builds the boards — usually within one business day.</p>
 
+      <div id="quote-part-banner" hidden class="mono" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border:1.5px solid var(--acc);border-radius:6px;background:var(--accSoft);color:var(--acc);font-size:13px;font-weight:600;margin-bottom:16px">
+        Quoting: <span id="quote-part-name"></span>
+      </div>
+
       <!-- TODO:FORM point action at Formspree / Web3Forms / serverless endpoint -->
       <form id="quote-form" style="display:flex;flex-direction:column;gap:14px">
+        <input type="hidden" name="part" id="quote-part-field" />
         <div class="grid-2" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <input class="field" name="name" required placeholder="Name" />
           <input class="field" name="company" placeholder="Company" />
@@ -25,7 +35,7 @@ import { contact } from '../data/site.js';
           <input class="field" name="phone" type="tel" placeholder="Phone (optional)" />
         </div>
         <input class="field" name="machine" required placeholder="Machine &amp; control (e.g. 1987 Matsuura MC-760V, Fanuc 0-M)" />
-        <textarea class="field" name="message" placeholder="What do you need? Memory size, symptoms, retrofit, service, consultation…" style="min-height:110px;resize:vertical"></textarea>
+        <textarea class="field" name="message" id="quote-message" placeholder="What do you need? Memory size, symptoms, retrofit, service, consultation…" style="min-height:110px;resize:vertical"></textarea>
         <button class="btn" type="submit" style="align-self:flex-start">Send request</button>
       </form>
       <div id="quote-ok" hidden style="padding:30px;border:1.5px solid var(--acc);border-radius:10px;background:var(--accSoft)">
@@ -43,7 +53,17 @@ import { contact } from '../data/site.js';
     </aside>
   </section>
 
-  <script is:inline>
+  <script is:inline define:vars={{ partNames }}>
+    var part = new URLSearchParams(location.search).get('part');
+    if (part) {
+      var name = partNames[part] || part;
+      document.getElementById('quote-part-field').value = part;
+      document.getElementById('quote-part-name').textContent = name;
+      document.getElementById('quote-part-banner').hidden = false;
+      var msg = document.getElementById('quote-message');
+      msg.placeholder = 'Asking about ' + name + '. Anything else we should know — machine, symptoms, quantity?';
+    }
+
     document.getElementById('quote-form').addEventListener('submit', function (e) {
       e.preventDefault(); // TODO:FORM submit to real endpoint
       this.hidden = true;

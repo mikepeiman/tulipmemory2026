@@ -1,0 +1,75 @@
+---
+// Full catalogue: every SKU, grouped by control family, plus a flat OEM
+// part-number index so the page is findable by people searching a Fanuc/
+// Yasnac/Mitsubishi part number rather than ours.
+import Base from '../../layouts/Base.astro';
+import ProductInterest from '../../components/ProductInterest.astro';
+import {
+  families,
+  productsByFamily,
+  allOemPartNumbers,
+  formatPrice
+} from '../../data/products';
+
+const oemNumbers = allOemPartNumbers();
+
+const title = 'CNC Memory Boards — Fanuc, Yasnac & Mitsubishi | Tulip Electronics';
+const description = 'The full Tulip Electronics catalogue: replacement memory boards for legacy Fanuc, Yasnac and Mitsubishi CNC controls, with prices and OEM part number cross-references.';
+---
+
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[{ name: 'Home', path: '/' }, { name: 'Products', path: '/products/' }]}
+>
+  <section class="container" style="max-width:1000px;padding-top:52px;padding-bottom:20px">
+    <p class="eyebrow" style="margin:0 0 14px">FULL CATALOGUE</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">Memory boards for legacy CNC controls</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 12px;max-width:64ch">New manufacture memory for Fanuc, Yasnac and Mitsubishi controls from the 1980s onward. Prices below are list, in US dollars.</p>
+    <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0">Working out which board you need? <a href="/quote/">Send us your control model and the part number printed on the board you're replacing.</a></p>
+  </section>
+
+  {families.map((family) => {
+    const skus = productsByFamily(family.id);
+    if (skus.length === 0) return null;
+    return (
+      <section class="container" style="max-width:1000px;padding-bottom:36px">
+        <div class="card" style="overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);background:var(--bg3);flex-wrap:wrap">
+            <a href={`/controls/${family.id}/`} style="font:700 13px 'Public Sans',sans-serif;color:var(--acc)">{family.label}{family.oemLabel && <span style="color:var(--tx3);font-weight:400"> ({family.oemLabel})</span>} →</a>
+            <span style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3)">{family.blurb}</span>
+          </div>
+          <div class="mono" style="display:grid;grid-template-columns:1.3fr 1.6fr 0.8fr 0.8fr 1fr;gap:0 16px;align-items:center;padding:12px 22px;border-bottom:1px solid var(--line);font-size:10.5px;font-weight:600;letter-spacing:0.1em;color:var(--tx3)">
+            <span>BOARD</span><span>FITS</span><span>CAPACITY</span><span>PRICE</span><span>AVAILABILITY</span>
+          </div>
+          {skus.map((sku) => (
+            <a href={`/products/${sku.slug}/`} class="row-link" style="display:grid;grid-template-columns:1.3fr 1.6fr 0.8fr 0.8fr 1fr;gap:0 16px;align-items:center;padding:14px 22px;border-bottom:1px solid var(--line);color:var(--tx)">
+              <span style="font:700 14px 'Public Sans',sans-serif">{sku.partName}</span>
+              <span style="font:400 13px 'Public Sans',sans-serif;color:var(--tx2)">{sku.controls.join(', ')}</span>
+              <span class="mono" style="font-size:13px;color:var(--tx2)">{sku.capacity}</span>
+              <span class="mono" style="font-size:13px;font-weight:600">{formatPrice(sku.priceUsd)}</span>
+              <span class="mono" style={`font-size:12px;font-weight:600;color:${sku.stock.sellable ? 'var(--acc)' : 'var(--tx3)'}`}>{sku.stock.label}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    );
+  })}
+
+  <section class="container" style="max-width:1000px;padding-bottom:36px">
+    <ProductInterest />
+  </section>
+
+  <section class="container" style="max-width:1000px;padding-bottom:64px">
+    <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 6px">OEM part numbers we cross-reference</h2>
+    <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 16px">If the number printed on your board or motherboard is in this list, we can almost certainly help — {oemNumbers.length} part numbers, across every control we serve.</p>
+    <div class="mono" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px 16px;font-size:12.5px;color:var(--tx2)">
+      {oemNumbers.map((n) => <span>{n}</span>)}
+    </div>
+  </section>
+
+  <style>
+    .row-link:hover { background: var(--bg3); opacity: 1; }
+    .row-link:last-child { border-bottom: none; }
+  </style>
+</Base>

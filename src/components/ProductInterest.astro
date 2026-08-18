@@ -1,0 +1,216 @@
+---
+// "Help us pick what to build next" — the inviting replacement for the old
+// red "Controls we do not make memory for" box. States honestly what we don't
+// serve, then turns that into an invitation: vote on requested products, or
+// suggest a new one on /product-development/.
+//
+// Used on /products/, /controls/fanuc/ and /product-development/.
+// Wrap it in a <section class="container"> with the page's own max-width.
+//
+// Votes: durable per visitor (localStorage), one vote per product, click again
+// to retract. Until a real endpoint exists the tally is local to the visitor's
+// browser — search for TODO:VOTES.
+import { requestedProducts } from '../data/products';
+
+interface Props {
+  /** false on /product-development/ itself, where the form below is the CTA. */
+  showCta?: boolean;
+}
+
+const { showCta = true } = Astro.props;
+
+const seedVotes = Object.fromEntries(requestedProducts.map((r) => [r.id, r.seedVotes]));
+---
+
+<div class="pi-box">
+  <p class="eyebrow eyebrow--acc" style="margin:0 0 10px">PRODUCT DEVELOPMENT</p>
+  <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 8px">Don't see your control? Help us pick what to build next.</h2>
+  <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 18px;max-width:70ch">
+    We don't make memory for every control — but that is a snapshot, not a verdict. These are the
+    products we're asked about and don't serve today. Vote for the one you'd actually buy: real
+    demand is what gets a product onto the bench.
+  </p>
+
+  <div class="pi-list">
+    {requestedProducts.map((r) => (
+      <div class="pi-row" data-vote-id={r.id}>
+        <button type="button" class="pi-vote" data-vote-btn aria-pressed="false" aria-label={`Vote for ${r.label}`}>
+          <span class="pi-arrow" aria-hidden="true">▲</span>
+          <span data-vote-count>{r.seedVotes}</span>
+        </button>
+        <div class="pi-text">
+          <b>{r.label}</b>
+          <span>{r.detail}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  <p class="pi-note">One vote per product, per visitor — change your mind any time. Your vote is remembered on this device.</p>
+
+  {showCta && (
+    <div class="pi-cta">
+      <a href="/product-development/" class="btn">Suggest a product</a>
+      <p style="font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">
+        Something else in mind? Tell us what you'd buy — you can even propose an amount you'd
+        invest in its development. Terms flexible, worked out together.
+      </p>
+    </div>
+  )}
+</div>
+
+<script is:inline define:vars={{ seedVotes }}>
+  (function () {
+    var STORE_KEY = 'tulip-product-votes';
+    var ID_KEY = 'tulip-visitor-id';
+
+    function readVotes() {
+      try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { return {}; }
+    }
+    function writeVotes(v) {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(v)); } catch (e) {}
+    }
+    // Stable anonymous id per visitor, so a future endpoint can dedupe on
+    // (productId, visitorId) instead of relying on IP addresses.
+    function visitorId() {
+      var id = null;
+      try { id = localStorage.getItem(ID_KEY); } catch (e) {}
+      if (!id) {
+        id = window.crypto && crypto.randomUUID
+          ? crypto.randomUUID()
+          : 'v-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+        try { localStorage.setItem(ID_KEY, id); } catch (e) {}
+      }
+      return id;
+    }
+
+    // TODO:VOTES — point at a serverless endpoint (Vercel function + a small KV
+    // store). It should dedupe server-side on (productId, visitorId) so the
+    // shared tally stays one-vote-per-visitor across devices, and return the
+    // shared counts to hydrate the buttons on load. Until then votes persist
+    // locally only, on top of the seed counts.
+    function submitVote(productId, voted) {
+      // fetch('/api/votes', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ productId: productId, visitorId: visitorId(), voted: voted })
+      // });
+    }
+
+    var votes = readVotes();
+
+    document.querySelectorAll('[data-vote-id]').forEach(function (row) {
+      var id = row.getAttribute('data-vote-id');
+      var btn = row.querySelector('[data-vote-btn]');
+      var countEl = row.querySelector('[data-vote-count]');
+      if (!id || !btn || !countEl) return;
+
+      function render() {
+        var voted = !!votes[id];
+        btn.setAttribute('aria-pressed', voted ? 'true' : 'false');
+        btn.classList.toggle('pi-vote--on', voted);
+        countEl.textContent = (seedVotes[id] || 0) + (voted ? 1 : 0);
+      }
+
+      btn.addEventListener('click', function () {
+        if (votes[id]) { delete votes[id]; } else { votes[id] = true; }
+        writeVotes(votes);
+        submitVote(id, !!votes[id]);
+        render();
+      });
+
+      render();
+    });
+  })();
+</script>
+
+<style>
+  .pi-box {
+    padding: 26px 28px;
+    border: 1.5px solid var(--accLine);
+    border-radius: 10px;
+    background: var(--accSoft);
+  }
+
+  .pi-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pi-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--accLine);
+  }
+
+  .pi-vote {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    min-width: 54px;
+    padding: 8px 10px;
+    border: 1.5px solid var(--btn2line);
+    border-radius: 8px;
+    background: var(--bg2);
+    color: var(--tx2);
+    cursor: pointer;
+    font: 600 13px 'IBM Plex Mono', monospace;
+  }
+
+  .pi-vote:hover {
+    border-color: var(--acc);
+    color: var(--acc);
+  }
+
+  .pi-vote--on,
+  .pi-vote--on:hover {
+    border-color: var(--acc);
+    background: var(--acc);
+    color: var(--accTx);
+  }
+
+  .pi-arrow {
+    font-size: 11px;
+    line-height: 1;
+  }
+
+  .pi-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .pi-text b {
+    font: 700 14px 'Public Sans', sans-serif;
+    color: var(--tx);
+  }
+
+  .pi-text span {
+    font: 400 13px/1.55 'Public Sans', sans-serif;
+    color: var(--tx2);
+  }
+
+  .pi-note {
+    font: 400 12px 'Public Sans', sans-serif;
+    color: var(--tx3);
+    margin: 12px 0 0;
+  }
+
+  .pi-cta {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 1px solid var(--accLine);
+  }
+
+  .pi-cta p {
+    flex: 1;
+    min-width: 260px;
+  }
+</style>

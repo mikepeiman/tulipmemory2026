@@ -18,9 +18,14 @@ npm run dev
 Or with the CLI: `npx vercel` from this folder.
 
 ## TODO before launch
-- **Forms**: quote / reserve / newsletter forms currently show a local confirmation only.
-  Point them at a real endpoint — search for `TODO:FORM` in the code. Easiest options:
-  [Formspree](https://formspree.io), [Web3Forms](https://web3forms.com), or a Vercel serverless function.
+- **Forms**: quote / reserve / newsletter / product-interest forms currently show a local
+  confirmation only. Point them at a real endpoint — search for `TODO:FORM` in the code.
+  Easiest options: [Formspree](https://formspree.io), [Web3Forms](https://web3forms.com),
+  or a Vercel serverless function.
+- **Votes**: the requested-products upvote list (`src/components/ProductInterest.astro`)
+  persists per-visitor in localStorage, so counts are local-only until wired up. For a
+  shared, tamper-resistant tally, point `TODO:VOTES` at a Vercel function + small KV store,
+  deduping server-side on the anonymous visitor id the component already generates.
 - **Stripe**: "Buy" buttons route to the quote page for now. Replace with Stripe Payment
   Links per product/capacity when prices are set — search for `TODO:STRIPE`.
 - **Deposit amounts** on /reserve ($500 / $250) are placeholders — confirm with Bill.

@@ -1,20 +1,21 @@
 ---
 import Base from '../layouts/Base.astro';
-import { families, services, contact } from '../data/site.js';
+import { services, contact } from '../data/site.js';
+import { families, platformsByFamily, productsByFamily, formatPrice } from '../data/products';
 ---
 
 <Base
-  title="Fanuc CNC Memory Upgrades (FANRAM) | Tulip Electronics"
-  description="New FANRAM memory boards for legacy Fanuc CNC controls — Fanuc 0, 6, 11, 12, 15, 16, 18. Made in Canada since 1984. 3-year warranty. Boards from the 1990s still running."
+  title="Fanuc, Yasnac &amp; Mitsubishi CNC Memory Upgrades | Tulip Electronics"
+  description="New memory boards for legacy Fanuc, Yasnac and Mitsubishi CNC controls. Made in Canada since 1984. 3-year warranty. Boards from the 1990s still running."
 >
   <!-- Hero -->
   <section class="container hero-grid" style="display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;padding-top:60px;padding-bottom:40px">
     <div style="display:flex;flex-direction:column;gap:20px">
       <p class="eyebrow" style="margin:0">FORTY YEARS OF KEEPING GOOD MACHINES ALIVE</p>
       <h1 style="font:700 48px/1.08 'Public Sans',sans-serif;letter-spacing:-0.015em;margin:0">Your machine isn't obsolete.<br />Its memory board is.</h1>
-      <p style="font:400 16px/1.6 'Public Sans',sans-serif;color:var(--tx2);max-width:52ch;margin:0">New FANRAM memory boards for legacy Fanuc controls — plus retrofits, service and consultation from the people who've built them since 1984. Customers still run boards we shipped in the 1990s.</p>
+      <p style="font:400 16px/1.6 'Public Sans',sans-serif;color:var(--tx2);max-width:52ch;margin:0">New memory boards for legacy Fanuc, Yasnac and Mitsubishi controls — plus retrofits, service and consultation from the people who've built them since 1984. Customers still run boards we shipped in the 1990s.</p>
       <div style="display:flex;gap:12px">
-        <a href="/fanuc-memory-upgrades/" class="btn">Find your board</a>
+        <a href="/products/" class="btn">Find your board</a>
         <a href="/quote/" class="btn btn--outline">Request a quote</a>
       </div>
       <p class="mono" style="display:flex;gap:24px;font-size:11px;font-weight:500;color:var(--tx3);margin:4px 0 0">
@@ -22,11 +23,11 @@ import { families, services, contact } from '../data/site.js';
       </p>
     </div>
     <div class="card" style="overflow:hidden;box-shadow:var(--shadow)">
-      <img src="/assets/board-blue.jpg" alt="FANRAM-128 memory board for Fanuc CNC controls, replacement for A87L-0001-0084" style="width:100%;height:220px;object-fit:cover;display:block" />
+      <img src="/assets/board-blue.jpg" alt="FANRAM-128k memory board for Fanuc CNC controls" style="width:100%;height:220px;object-fit:cover;display:block" />
       <dl class="mono" style="padding:16px 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px;font-size:12px;color:var(--tx3);margin:0">
-        <dt>BOARD</dt><dd style="color:var(--tx);text-align:right;margin:0">FANRAM-128</dd>
-        <dt>CAPACITY</dt><dd style="color:var(--tx);text-align:right;margin:0">128K · 320 M</dd>
-        <dt>REPLACES</dt><dd style="color:var(--tx);text-align:right;margin:0">A87L-0001-0084</dd>
+        <dt>BOARD</dt><dd style="color:var(--tx);text-align:right;margin:0">FANRAM-128k</dd>
+        <dt>CAPACITY</dt><dd style="color:var(--tx);text-align:right;margin:0">128K</dd>
+        <dt>PRICE</dt><dd style="color:var(--tx);text-align:right;margin:0">{formatPrice(895)}</dd>
       </dl>
     </div>
   </section>
@@ -35,21 +36,25 @@ import { families, services, contact } from '../data/site.js';
   <section class="container" style="padding-bottom:44px">
     <div class="card" style="overflow:hidden">
       <div style="display:flex;align-items:center;gap:14px;padding:16px 22px;border-bottom:1px solid var(--line);background:var(--bg3);flex-wrap:wrap">
-        <h2 style="font:700 13px 'Public Sans',sans-serif;color:var(--acc);margin:0">FANRAM memory boards by control</h2>
+        <h2 style="font:700 13px 'Public Sans',sans-serif;color:var(--acc);margin:0">Memory boards by control family</h2>
         <span style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3)">New manufacture — not refurbished. Model not listed? We can likely still help.</span>
       </div>
       <div class="mono" style="display:grid;grid-template-columns:1.2fr 2fr 1fr auto;gap:0 20px;align-items:center;padding:13px 22px;border-bottom:1px solid var(--line);font-size:10.5px;font-weight:600;letter-spacing:0.1em;color:var(--tx3)">
-        <span>CONTROL FAMILY</span><span>CAPACITIES</span><span>REPLACES</span><span style="width:88px"></span>
+        <span>CONTROL FAMILY</span><span>CONTROLS SERVED</span><span>BOARDS</span><span style="width:88px"></span>
       </div>
-      {families.map((f) => (
-        <div style="display:grid;grid-template-columns:1.2fr 2fr 1fr auto;gap:0 20px;align-items:center;padding:15px 22px;border-bottom:1px solid var(--line)">
-          <span style="font:700 14px 'Public Sans',sans-serif">{f.name} <span style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3)">{f.sub}</span></span>
-          <span class="mono" style="font-size:13px;font-weight:500;color:var(--tx2)">{f.caps}</span>
-          <span class="mono" style="font-size:12px;color:var(--tx3)">{f.replacesShort}</span>
-          <a href={`/fanuc-memory-upgrades/${f.slug}/`} class="btn btn--sm" style="width:56px;text-align:center;padding:8px 16px;font-size:12px">View</a>
-        </div>
-      ))}
-      <p style="padding:13px 22px;background:var(--bg3);font:400 12px 'Public Sans',sans-serif;color:var(--tx2);margin:0">Also: <b style="color:var(--tx)">FanFile</b> and <b style="color:var(--tx)">FanKit</b> memory solutions. Fanuc 9, 10, 21i-A and others — <a href="/quote/" style="font-weight:700">tell us your control →</a></p>
+      {families.map((f) => {
+        const skus = productsByFamily(f.id);
+        const controlList = [...new Set(platformsByFamily(f.id).flatMap((p) => p.controls))].join(', ');
+        return (
+          <div style="display:grid;grid-template-columns:1.2fr 2fr 1fr auto;gap:0 20px;align-items:center;padding:15px 22px;border-bottom:1px solid var(--line)">
+            <span style="font:700 14px 'Public Sans',sans-serif">{f.label}{f.oemLabel && <span style="font:400 12px 'Public Sans',sans-serif;color:var(--tx3)"> ({f.oemLabel})</span>}</span>
+            <span class="mono" style="font-size:12px;font-weight:500;color:var(--tx2)">{controlList}</span>
+            <span class="mono" style="font-size:12px;color:var(--tx3)">{skus.length} {skus.length === 1 ? 'board' : 'boards'}</span>
+            <a href={`/controls/${f.id}/`} class="btn btn--sm" style="width:56px;text-align:center;padding:8px 16px;font-size:12px">View</a>
+          </div>
+        );
+      })}
+      <p style="padding:13px 22px;background:var(--bg3);font:400 12px 'Public Sans',sans-serif;color:var(--tx2);margin:0">Not listed? Fanuc 9, 10, 21i-A and others — <a href="/quote/" style="font-weight:700">tell us your control →</a>. Or see <a href="/products/" style="font-weight:700">the full catalogue →</a></p>
     </div>
   </section>
 

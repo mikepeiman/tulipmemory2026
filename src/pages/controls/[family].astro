@@ -1,0 +1,144 @@
+---
+// Per-control-family finder: /controls/fanuc/, /controls/yasnac/, /controls/mitsubishi/
+// Job of this page: someone knows their control but not our part numbers.
+// Get them from "I have a Fanuc 15B" to the right SKU in one click, and tell
+// them honestly when we can't help.
+import Base from '../../layouts/Base.astro';
+import ProductInterest from '../../components/ProductInterest.astro';
+import {
+  families,
+  platformsByFamily,
+  productsByPlatform,
+  productsByFamily,
+  formatPrice
+} from '../../data/products';
+
+export function getStaticPaths() {
+  return families.map((family) => ({
+    params: { family: family.id },
+    props: { family }
+  }));
+}
+
+const { family } = Astro.props;
+const platforms = platformsByFamily(family.id);
+const allProducts = productsByFamily(family.id);
+
+const title = `${family.label} CNC Memory Upgrades & Replacement Boards | Tulip Electronics`;
+const description = `${family.blurb} Made in Canada by the original manufacturer, with a three-year warranty.`;
+---
+
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Products', path: '/products/' },
+    { name: family.label, path: `/controls/${family.id}/` }
+  ]}
+>
+  <section class="container" style="max-width:900px;padding-top:52px;padding-bottom:20px">
+    <p class="eyebrow" style="margin:0 0 14px">CONTROL FAMILY</p>
+    <h1 style="font:700 34px 'Public Sans',sans-serif;margin:0 0 8px">{family.label} memory upgrades</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 6px;max-width:64ch">{family.blurb}</p>
+    {family.oemLabel && <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0 0 6px">Sold by {family.oemLabel} under the {family.label} name.</p>}
+    <p class="mono" style="font-size:12px;color:var(--tx3);margin:14px 0 0">{allProducts.length} {allProducts.length === 1 ? 'BOARD' : 'BOARDS'} ACROSS {platforms.length} {platforms.length === 1 ? 'CONTROL PLATFORM' : 'CONTROL PLATFORMS'}</p>
+  </section>
+
+  <section class="container" style="max-width:900px;padding-bottom:28px">
+    <div style="padding:18px 22px;border:1.5px dashed var(--btn2line);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        {platforms.map((p) => (
+          <a href={`#${p.id}`} class="mono" style="padding:8px 14px;border:1px solid var(--btn2line);border-radius:6px;font-size:12px;font-weight:600;color:var(--tx)">{p.label}</a>
+        ))}
+      </div>
+      <a href="/quote/" class="btn btn--sm" style="white-space:nowrap">Not sure? Ask us →</a>
+    </div>
+  </section>
+
+  {platforms.map((platform) => {
+    const skus = productsByPlatform(platform.id);
+    return (
+      <section class="container" id={platform.id} style="max-width:900px;padding-bottom:36px;scroll-margin-top:90px">
+        <h2 style="font:700 20px 'Public Sans',sans-serif;margin:0 0 10px">{platform.label}</h2>
+        {platform.notes.map((n) => <p style="font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 10px">{n}</p>)}
+
+        {skus.length > 0 ? (
+          <div class="card" style="overflow:hidden;margin-bottom:14px">
+            {skus.map((sku, i) => (
+              <a href={`/products/${sku.slug}/`} style={`display:grid;grid-template-columns:1.2fr 1.6fr 0.7fr 0.7fr 1fr;gap:0 14px;align-items:center;padding:14px 20px;color:var(--tx);${i < skus.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}`}>
+                <span style="font:700 14px 'Public Sans',sans-serif">{sku.partName}</span>
+                <span style="font:400 12.5px 'Public Sans',sans-serif;color:var(--tx2)">{sku.controls.join(', ')}</span>
+                <span class="mono" style="font-size:12.5px;color:var(--tx2)">{sku.capacity}</span>
+                <span class="mono" style="font-size:12.5px;font-weight:600">{formatPrice(sku.priceUsd)}</span>
+                <span class="mono" style={`font-size:11.5px;font-weight:600;color:${sku.stock.sellable ? 'var(--acc)' : 'var(--tx3)'}`}>{sku.stock.label}</span>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0 0 14px">No board listed for this platform yet. <a href="/quote/">Tell us your control</a>.</p>
+        )}
+
+        {platform.motherboards.length > 0 && (
+          <details style="margin-bottom:10px">
+            <summary class="mono" style="cursor:pointer;font-size:12px;font-weight:600;color:var(--tx3);padding:6px 0">MOTHERBOARD PART NUMBERS</summary>
+            <div class="card" style="border-radius:8px;overflow:hidden;margin-top:8px">
+              <dl style="display:grid;grid-template-columns:180px 1fr;gap:0;margin:0">
+                {platform.motherboards.map((m, i) => (
+                  <>
+                    <dt class="mono" style={`padding:9px 16px;${i < platform.motherboards.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}color:var(--tx3);font-size:11px`}>{m.control.toUpperCase()}</dt>
+                    <dd class="mono" style={`padding:9px 16px;${i < platform.motherboards.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}margin:0;font-size:12.5px`}>{m.partNumber}</dd>
+                  </>
+                ))}
+              </dl>
+            </div>
+          </details>
+        )}
+
+        {platform.oemModules.length > 0 && (
+          <details>
+            <summary class="mono" style="cursor:pointer;font-size:12px;font-weight:600;color:var(--tx3);padding:6px 0">ORIGINAL {family.label.toUpperCase()} MEMORY MODULES ON THIS PLATFORM</summary>
+            <div class="card" style="overflow:hidden;overflow-x:auto;margin-top:8px">
+              <table class="mono" style="width:100%;border-collapse:collapse;font-size:12px">
+                <thead>
+                  <tr style="background:var(--bg3)">
+                    <th style="text-align:left;padding:8px 14px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">MODULE</th>
+                    <th style="text-align:left;padding:8px 14px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">SIZE</th>
+                    <th style="text-align:left;padding:8px 14px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">USABLE</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {platform.oemModules.map((m) => (
+                    <tr>
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--line)">{m.partNumber}</td>
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--line)">{m.flash ? `${m.flash} FROM${m.sram && m.sram !== '0' ? ` / ${m.sram} SRAM` : ''}` : m.size}</td>
+                      <td style="padding:8px 14px;border-bottom:1px solid var(--line)">{m.usable ?? '—'}{m.note && <span style="color:var(--tx3)"> {m.note}</span>}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        )}
+      </section>
+    );
+  })}
+
+  {family.id === 'fanuc' && (
+    <section class="container" style="max-width:900px;padding-bottom:36px">
+      <ProductInterest />
+    </section>
+  )}
+
+  <section class="container" style="max-width:900px;padding-bottom:64px">
+    <div class="card" style="padding:22px 26px">
+      <h2 style="font:700 15px 'Public Sans',sans-serif;margin:0 0 10px">Buying from the manufacturer</h2>
+      <ul style="margin:0 0 12px;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">We designed and build these boards. This is not surplus stock.</li>
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">Made in Canada, three-year <a href="/warranty/">warranty</a>.</li>
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">We've been supplying this market since 1979 and exhibited at roughly 45 trade shows with our own booth.</li>
+      </ul>
+      <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0">Also available through our dealers.</p>
+    </div>
+  </section>
+</Base>

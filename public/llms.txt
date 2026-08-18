@@ -26,3 +26,4 @@ original engineer. Customers still run FANRAM boards shipped in the 1990s.
 - [Warranty & support](https://tulipmemory.com/warranty/): 3-year warranty terms
 - [Request a quote](https://tulipmemory.com/quote/)
 - [In development](https://tulipmemory.com/reserve/): Fanuc 0 colour-LCD conversion and USB program input (reserve with deposit)
+- [Product development](https://tulipmemory.com/product-development/): vote on requested products (Fanuc 0i, Mate, iB-series memory) or suggest a new one, optionally with backing

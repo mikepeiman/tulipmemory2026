@@ -1,0 +1,192 @@
+---
+// Per-SKU product page. One page per Tulip part number — these are the pages
+// that earn search traffic: a machinist holding a dead board types the OEM
+// part number, not "CNC memory upgrade". The OEM cross-reference table below
+// is the SEO payload, not decoration.
+import Base from '../../layouts/Base.astro';
+import { contact } from '../../data/site.js';
+import {
+  products,
+  getPlatform,
+  getFamily,
+  formatPrice
+} from '../../data/products';
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { slug: product.slug },
+    props: { product }
+  }));
+}
+
+const { product } = Astro.props;
+const platform = getPlatform(product.platformId);
+const family = getFamily(product.family);
+
+const title = `${product.partName} — ${product.capacity} memory for ${family?.label} ${product.controls.join(', ')} | Tulip Electronics`;
+const description = product.draftBlurb;
+
+// Only surface OEM replacements Bill has confirmed. Research-sourced numbers
+// stay in the data file until he confirms them — we do not publish guesses
+// about what a board replaces.
+const confirmedReplacements = product.oemReplaces.filter((r) => r.source === 'bill');
+const hasFromColumns = platform?.oemModules.some((m) => m.flash !== undefined) ?? false;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: product.partName,
+  description: product.draftBlurb,
+  sku: product.partName,
+  brand: { '@type': 'Brand', name: 'Tulip Electronics' },
+  manufacturer: { '@id': 'https://tulipmemory.com/#org' },
+  offers: {
+    '@type': 'Offer',
+    price: product.priceUsd,
+    priceCurrency: 'USD',
+    availability: product.stock.sellable ? 'https://schema.org/InStock' : 'https://schema.org/PreOrder',
+    url: new URL(Astro.url.pathname, Astro.site).href,
+    seller: { '@id': 'https://tulipmemory.com/#org' }
+  },
+  ...(confirmedReplacements.length ? { isSimilarTo: confirmedReplacements.map((r) => r.partNumber).join(', ') } : {})
+};
+---
+
+<Base
+  title={title}
+  description={description}
+  breadcrumbs={[
+    { name: 'Home', path: '/' },
+    { name: 'Products', path: '/products/' },
+    { name: family?.label ?? '', path: `/controls/${product.family}/` },
+    { name: product.partName, path: `/products/${product.slug}/` }
+  ]}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <section class="container" style="max-width:800px;padding-top:36px;padding-bottom:56px">
+    <nav class="mono" style="font-size:12px;color:var(--tx3);margin-bottom:22px" aria-label="Breadcrumb">
+      <a href="/products/">PRODUCTS</a> / <a href={`/controls/${product.family}/`}>{family?.label.toUpperCase()}</a> / {product.partName.toUpperCase()}
+    </nav>
+
+    <p class="eyebrow" style="margin:0 0 10px">{family?.label} {product.controls.join(' · ')}</p>
+    <h1 style="font:700 34px/1.15 'Public Sans',sans-serif;margin:0 0 12px">{product.partName}</h1>
+    <p style="font:400 15px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0 0 22px;max-width:64ch">{product.draftBlurb}</p>
+
+    <div class="card" style="padding:20px 24px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:8px">
+      <span style="font:700 28px 'Public Sans',sans-serif">{formatPrice(product.priceUsd)}</span>
+      <span class="mono" style={`font-size:13px;font-weight:600;color:${product.stock.sellable ? 'var(--acc)' : 'var(--tx3)'}`}>
+        {product.stock.label}{product.stock.leadTime && <span style="color:var(--tx3);font-weight:400"> · {product.stock.leadTime}</span>}
+      </span>
+    </div>
+    {product.stock.note && <p style="font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx3);margin:8px 0 0">{product.stock.note}</p>}
+
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px">
+      {product.stock.sellable ? (
+        <>
+          <a href={`/quote/?part=${product.slug}`} class="btn">Request a quote</a>
+          <a href="/services/" class="btn btn--outline">Need help identifying your board?</a>
+        </>
+      ) : (
+        <a href={`/quote/?part=${product.slug}`} class="btn">Ask us about availability</a>
+      )}
+      <span class="mono" style="font-size:12px;color:var(--tx3)">OR CALL {contact.phone}</span>
+    </div>
+
+    {product.fitNote && (
+      <div style="margin-top:28px;padding:16px 20px;border:1.5px solid var(--btn2line);border-radius:8px">
+        <p class="microlabel" style="margin:0 0 6px">BEFORE YOU ORDER</p>
+        <p style="font:400 14px/1.6 'Public Sans',sans-serif;color:var(--tx2);margin:0">{product.fitNote}</p>
+      </div>
+    )}
+
+    <section style="margin-top:40px">
+      <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 12px">Controls this board fits</h2>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        {product.controls.map((c) => (
+          <span class="mono" style="padding:8px 14px;border:1px solid var(--btn2line);border-radius:6px;font-size:12.5px;font-weight:600">{family?.label} {c}</span>
+        ))}
+      </div>
+      {platform?.notes.map((n) => <p style="font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx3);margin:6px 0 0">{n}</p>)}
+    </section>
+
+    {confirmedReplacements.length > 0 && (
+      <section style="margin-top:36px">
+        <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 12px">OEM part numbers this replaces</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          {confirmedReplacements.map((r) => (
+            <span class="mono" style="padding:8px 14px;border:1px solid var(--btn2line);border-radius:6px;font-size:12.5px">{r.partNumber}</span>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {platform && platform.motherboards.length > 0 && (
+      <section style="margin-top:36px">
+        <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 8px">Motherboards</h2>
+        <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0 0 14px">Check the motherboard part number in your control against this list before ordering.</p>
+        <div class="card" style="border-radius:8px;overflow:hidden">
+          <dl style="display:grid;grid-template-columns:150px 1fr;gap:0;font:400 13px 'Public Sans',sans-serif;margin:0">
+            {platform.motherboards.map((m, i) => (
+              <>
+                <dt class="mono" style={`padding:11px 16px;${i < platform.motherboards.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}color:var(--tx3);font-size:11px;letter-spacing:0.08em`}>{m.control.toUpperCase()}</dt>
+                <dd class="mono" style={`padding:11px 16px;${i < platform.motherboards.length - 1 ? 'border-bottom:1px solid var(--line);' : ''}margin:0`}>{m.partNumber}</dd>
+              </>
+            ))}
+          </dl>
+        </div>
+      </section>
+    )}
+
+    {platform && platform.oemModules.length > 0 && (
+      <section style="margin-top:36px">
+        <h2 style="font:700 18px 'Public Sans',sans-serif;margin:0 0 8px">{family?.label} memory modules on this platform</h2>
+        <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0 0 14px">The original modules fitted to {platform.label}, with the capacity each one gives you.</p>
+        <div class="card" style="overflow:hidden;overflow-x:auto">
+          <table class="mono" style="width:100%;border-collapse:collapse;font-size:12.5px">
+            <thead>
+              <tr style="background:var(--bg3)">
+                <th style="text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">MODULE</th>
+                {hasFromColumns ? (
+                  <>
+                    <th style="text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">FLASH</th>
+                    <th style="text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">SRAM</th>
+                  </>
+                ) : (
+                  <th style="text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">SIZE</th>
+                )}
+                <th style="text-align:left;padding:10px 16px;border-bottom:1px solid var(--line);color:var(--tx3);font-weight:600">USABLE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {platform.oemModules.map((m) => (
+                <tr>
+                  <td style="padding:10px 16px;border-bottom:1px solid var(--line)">{m.partNumber}</td>
+                  {hasFromColumns ? (
+                    <>
+                      <td style="padding:10px 16px;border-bottom:1px solid var(--line)">{m.flash ?? '—'}</td>
+                      <td style="padding:10px 16px;border-bottom:1px solid var(--line)">{m.sram ?? '—'}</td>
+                    </>
+                  ) : (
+                    <td style="padding:10px 16px;border-bottom:1px solid var(--line)">{m.size}</td>
+                  )}
+                  <td style="padding:10px 16px;border-bottom:1px solid var(--line)">{m.usable ?? '—'}{m.note && <span style="color:var(--tx3)"> {m.note}</span>}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    <section style="margin-top:44px;padding:24px 26px;border:1px solid var(--line);border-radius:10px;background:var(--bg2)">
+      <h2 style="font:700 15px 'Public Sans',sans-serif;margin:0 0 12px">Why buy from us</h2>
+      <ul style="margin:0 0 14px;padding-left:18px;display:flex;flex-direction:column;gap:6px">
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">We manufacture this board. You're buying from the maker, not a surplus reseller.</li>
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">Made in Canada, with a three-year <a href="/warranty/">warranty</a>.</li>
+        <li style="font:400 13px/1.5 'Public Sans',sans-serif;color:var(--tx2)">Boards we shipped in the 1990s are still running. Ask us for references.</li>
+      </ul>
+      <p style="font:400 13px 'Public Sans',sans-serif;color:var(--tx3);margin:0">Not sure which board you need? Send us your control model and the part number printed on the board you're replacing, and we'll tell you.</p>
+    </section>
+  </section>
+</Base>
