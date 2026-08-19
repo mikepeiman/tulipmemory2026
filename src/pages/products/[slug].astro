@@ -76,10 +76,10 @@ const schema = {
     <div class="card" style="padding:20px 24px;display:flex;align-items:baseline;gap:20px;flex-wrap:wrap;margin-bottom:8px">
       <span style="font:700 28px 'Public Sans',sans-serif">{formatPrice(product.priceUsd)}</span>
       <span class="mono" style={`font-size:13px;font-weight:600;color:${product.stock.sellable ? 'var(--acc)' : 'var(--tx3)'}`}>
-        {product.stock.label}{product.stock.leadTime && <span style="color:var(--tx3);font-weight:400"> · {product.stock.leadTime}</span>}
+        {product.stock.label}{product.stock.leadTime && <span style="color:var(--tx3);font-weight:400"> · {product.stock.leadTime}</span>}{product.stock.depositUsd && <span style="color:var(--tx3);font-weight:400"> · {formatPrice(product.stock.depositUsd)} deposit</span>}
       </span>
     </div>
-    {product.stock.note && <p style="font:400 13px/1.6 'Public Sans',sans-serif;color:var(--tx3);margin:8px 0 0">{product.stock.note}</p>}
+    {product.stock.note && <p style="font:400 13.5px/1.65 'Public Sans',sans-serif;color:var(--tx2);margin:10px 0 0;max-width:60ch">{product.stock.note}</p>}
 
     <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:20px">
       {product.stock.sellable ? (

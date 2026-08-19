@@ -68,6 +68,7 @@
 
 ## Not in the price list at all
 
+- **FANRAM deposit & lead time.** The site now states every FANRAM board is built to order with a US$250 deposit and a 2–4 week lead time, because the legacy connectors are custom-ordered. Confirm the deposit is $250 across all five FANRAM SKUs, and whether it is credited toward the order or refundable if the build stalls.
 - **Product descriptions.** Section 2 of the questionnaire came back blank, so every one-line description on the site is currently a draft written from the price list. They read fine but they are not your words yet.
 - **Warranty term.** The site says three years. Still correct?
 - **Customer references.** Dasco Engineering, Mancor Speers and Windsor Manufacturing — have they agreed to be named publicly?

@@ -92,6 +92,8 @@ export interface Stock {
   label: string;
   /** Lead time as Bill stated it, or undefined if he didn't. */
   leadTime?: string;
+  /** Up-front deposit in US dollars, if the board is built to order. */
+  depositUsd?: number;
   /** Bill's own note, verbatim where possible. */
   note?: string;
   /**
@@ -178,7 +180,7 @@ export const platforms: ControlPlatform[] = [
     oemModules: [],
     notes: [
       'Controls using bubble memory as storage: 6 (A, B, B2) series, 9, 11, 12.',
-      'Normally stocked; waiting to buy more Honda connectors. Can have stock 4 weeks after ordering these.',
+      'Built to order — the legacy connectors these controls need went out of production years ago and must be custom-ordered. Allow two to four weeks and a US$250 deposit.',
     ],
     needsBill: [
       'Honda connectors: quantity, unit cost, supplier and lead time. Five SKUs are gated on this purchase.',
@@ -344,11 +346,14 @@ export const platforms: ControlPlatform[] = [
 
 const STOCKED: Stock = { label: 'In stock', sellable: true };
 
-/** The bubble-memory family is gated on a connector purchase. */
+/** The FANRAM bubble-memory family: built to order, because the legacy
+ *  connectors and memory parts it needs are long out of production and must
+ *  be custom-ordered. The deposit secures those parts once we commit to them. */
 const BUBBLE_STOCK: Stock = {
   label: 'Built to order',
-  leadTime: '4 weeks',
-  note: 'Normally stocked. We are currently waiting on a connector order; stock resumes 4 weeks after those are ordered.',
+  leadTime: '2–4 weeks',
+  depositUsd: 250,
+  note: "Built to order, because the parts don't sit on a shelf. The connectors and memory components these controls use left production decades ago, so we source them board by board — often in small, custom runs. That sourcing is the lead time, and the deposit is what lets us commit to those parts for you. It's credited toward your board.",
   sellable: true,
 };
 
