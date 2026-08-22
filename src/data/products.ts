@@ -353,7 +353,7 @@ const BUBBLE_STOCK: Stock = {
   label: 'Built to order',
   leadTime: '2–4 weeks',
   depositUsd: 250,
-  note: "Built to order, because the parts don't sit on a shelf. The connectors and memory components these controls use left production decades ago, so we source them board by board — often in small, custom runs. That sourcing is the lead time, and the deposit is what lets us commit to those parts for you. It's credited toward your board.",
+  note: "Built to order. The connectors and memory parts these controls use went out of production years ago and must be custom-ordered for each board.",
   sellable: true,
 };
 
